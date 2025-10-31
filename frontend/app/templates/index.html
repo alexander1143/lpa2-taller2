@@ -9,13 +9,32 @@
 <body>
     <div class="container">
         <h1>Generador de Facturas PDF</h1>
-        <form method="POST" action="/generar-pdf">
+        <form id="facturaForm" method="POST" action="/generar-pdf">
             <div class="form-group">
-                <label for="id_factura">ID de Factura:</label>
-                <input type="text" id="id_factura" name="id_factura" required>
+                <label for="id_factura">Número de Factura:</label>
+                <input type="text" id="id_factura" name="id_factura" required 
+                       placeholder="Ingrese el número de factura"
+                       pattern="[A-Za-z0-9-]+" 
+                       title="Ingrese un número de factura válido">
             </div>
-            <button type="submit">Generar PDF</button>
+            <div class="button-group">
+                <button type="submit" class="btn-primary">Generar PDF</button>
+            </div>
         </form>
+        
+        <div id="pdfViewer" class="hidden">
+            <div class="pdf-controls">
+                <button onclick="window.print()" class="btn-secondary">
+                    <img src="{{ url_for('static', filename='img/print.svg') }}" alt="Imprimir">
+                    Imprimir
+                </button>
+                <a id="downloadBtn" href="#" class="btn-secondary" download="factura.pdf">
+                    <img src="{{ url_for('static', filename='img/download.svg') }}" alt="Descargar">
+                    Descargar PDF
+                </a>
+            </div>
+            <iframe id="pdfFrame" class="pdf-frame"></iframe>
+        </div>
         
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -27,5 +46,7 @@
             {% endif %}
         {% endwith %}
     </div>
+</body>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
